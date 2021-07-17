@@ -3,7 +3,6 @@ import java.util.StringTokenizer;
 
 public class lexical_remasterd {
 
-    private static Scanner s;
     private static StringTokenizer st;
 
     private static String passedString;
@@ -27,9 +26,7 @@ public class lexical_remasterd {
     public lexical_remasterd(String lineOfCode)
     {
         this.passedString = lineOfCode;
-        this.s = new Scanner(passedString);
-        s.useDelimiter("");
-        this.st = new StringTokenizer(passedString, ")(+-*/;.");
+        this.st = new StringTokenizer(passedString, "  )(+-*/;.");
         index = 0;
     }
 
@@ -41,14 +38,17 @@ public class lexical_remasterd {
 
     public int nextToken() {
 
-        while(s.hasNext()){
+        while(true){
             char n = passedString.charAt(index);
             if(Character.isDigit(n))
             {
-                tokenString = st.nextToken().trim();
-                index = passedString.indexOf(tokenString);
+                tokenString = st.nextToken().trim(); // Sometimes token can be a whitespace?
+                if(tokenString.length() == 0)
+                {
+                    tokenString = st.nextToken().trim();
+                }
                 index += tokenString.length();
-                return 1;
+                token = 1;
             }
             else
             {
@@ -59,10 +59,9 @@ public class lexical_remasterd {
                 }
                 lookup(n);
                 index++;
-                return token;
             }
+            return token;
         }
-        return token;
     }
 
     private boolean isEmptyOrSpace(char ch)

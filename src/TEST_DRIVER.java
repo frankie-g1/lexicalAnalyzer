@@ -1,7 +1,7 @@
 public class TEST_DRIVER {
 
     public static void main(String[] args) {
-        String eq = "61 + 5;.";
+        String eq = "8 + 2 - (5*2);.";
         lexical_remasterd test = new lexical_remasterd(eq);
 
         int nextToken= test.nextToken();

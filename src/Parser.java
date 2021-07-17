@@ -10,7 +10,7 @@ class Parser {
     private String nextTokenLexeme;
     private int saveToken; // evaluated with previous token, next Token.
     private String saveTokenLexeme;
-    private lexicalAnalyzer_forParser tokenScanner; // reads the user input delimited.
+    private lexical_remasterd tokenScanner; // reads the user input delimited.
 
     public Parser(Scanner scanner) {
         this.scanner = scanner;
@@ -39,19 +39,21 @@ class Parser {
             System.exit(0);
         }
 
-        tokenScanner = new lexicalAnalyzer_forParser(statement);
+        tokenScanner = new lexical_remasterd(statement);
         nextToken = tokenScanner.nextToken();
-        nextTokenLexeme = tokenScanner.getLexeme();
-            while(nextToken != 309) // period
+        nextTokenLexeme = tokenScanner.getTokenString();
+            while(nextToken != 308) // period
             {
                 int value = expression();
                 System.out.println(value);
-                if(nextToken == 308) // semicolon
+                if(nextToken == 307) // semicolon
                 {
+                    nextToken = tokenScanner.nextToken();
+                    nextTokenLexeme = tokenScanner.getTokenString();
                     continue;
                 }
                 nextToken = tokenScanner.nextToken();
-                nextTokenLexeme = tokenScanner.getLexeme();
+                nextTokenLexeme = tokenScanner.getTokenString();
             }
 
     }
@@ -67,7 +69,7 @@ class Parser {
             saveToken = nextToken; // saves + or -
             saveTokenLexeme = nextTokenLexeme;
             nextToken = tokenScanner.nextToken();
-            nextTokenLexeme = tokenScanner.getLexeme();
+            nextTokenLexeme = tokenScanner.getTokenString();
             if (saveToken == 21) {
                 right = term();
                 result = left + right;
@@ -92,7 +94,7 @@ class Parser {
             saveToken = nextToken;
             saveTokenLexeme = nextTokenLexeme;
             nextToken = tokenScanner.nextToken();
-            nextTokenLexeme = tokenScanner.getLexeme();
+            nextTokenLexeme = tokenScanner.getTokenString();
             if(saveToken == 23)
             {
                 int factor = factor();
@@ -113,17 +115,17 @@ class Parser {
     private int factor () {
         int value = 0;
         int saveIfInt;
-        if(nextToken==10)
+        if(nextToken==1)
         {
             saveIfInt = Integer.parseInt(nextTokenLexeme);
             nextToken = tokenScanner.nextToken();
-            nextTokenLexeme = tokenScanner.getLexeme();
+            nextTokenLexeme = tokenScanner.getTokenString();
             return saveIfInt;
         }
         else if(nextToken== 25)
         {
             nextToken = tokenScanner.nextToken();
-            nextTokenLexeme = tokenScanner.getLexeme();
+            nextTokenLexeme = tokenScanner.getTokenString();
             value = expression();
             if(nextToken != 26)
             {
@@ -133,7 +135,7 @@ class Parser {
             else
             {
                 nextToken = tokenScanner.nextToken();
-                nextTokenLexeme = tokenScanner.getLexeme();
+                nextTokenLexeme = tokenScanner.getTokenString();
                 return value;
             }
         }
